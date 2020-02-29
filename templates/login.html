@@ -1,0 +1,59 @@
+{% extends 'header.html' %}
+{% block content %}
+<script type="text/javascript">
+
+    function login() {
+    csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
+    username = $('input[name=username]').val();
+    pwd = $('input[name=pwd]').val();
+    data = {'csrfmiddlewaretoken':csrfmiddlewaretoken,'username':username,'pwd':pwd};
+        $.ajax({
+            url:'',
+            method:'post',
+            data:data,
+            async:false,
+            success:function (result) {
+                if (result['flag']==-1) alert('密码或用户名错误或没激活');
+                else window.location.href = '/';
+            }
+        })
+    }
+</script>
+
+
+    <div class="content-body">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-12">
+                    <h1 class="page-title">登录</h1>
+                    <article class="post">
+                        <div class="entry-content clearfix">
+                            <form action="#" method="post" class="contact-form">
+                                <div class="row">
+                                    <div class="col-md-6 col-md-offset-3">
+                                        <form id="login_value">
+                                                {% csrf_token %}
+                                                <input type="text" name="username" class="name_input" placeholder="请输入用户名" value="{{ user2 }}">
+                                                <input type="password" name="pwd" class="pass_input" placeholder="请输入密码" value="{{ pwd }}">
+                                                <input type="button" name="" value="登录" class="btn-send btn-5 btn-5b ion-ios-paperplane" onclick="login()">
+                                        </form>
+                                    </div>
+                                </div>    <!-- row -->
+                            </form>
+                        </div>
+                    </article>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer id="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="copyright">&copy; 2020 77777</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+{% endblock content %}

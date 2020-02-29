@@ -1,0 +1,45 @@
+{% extends 'header2.html' %}
+{% block content %}
+
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8"><h1 class="entry-title">查询结果</h1>
+            {% if query %}
+            {% for article in page.object_list %}
+
+                            <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+                            <a href="{% url 'blog:show_article' %}?id={{article.object.id}} ">{{article.object.title}}</a>
+                        </h1>
+                        <div class="entry-meta">
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">{{article.object.date_time}}</time></a></span>
+                            <span class="post-author"><a href="#">{{article.object.date_time}}</a></span>
+                            <span class="comments-link"><a href="#">{{article.object.comment}} 评论</a></span>
+                            <span class="views-count"><a href="#">{{article.object.view}} 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        {% load extra_tags %}
+                        <p>{{ article.object.content | link_str}}</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="{% url 'blog:show_article' %}?id={{article.object.id}} " class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                            无记录
+            {% endfor %}
+                {% else %}
+                无记录
+            {% endif %}
+            </main>
+        </div>
+    </div>
+</div>
+<!-- Mobile Menu -->
+
+{% endblock content %}

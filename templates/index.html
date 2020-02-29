@@ -1,0 +1,63 @@
+{% extends 'header.html' %}
+{% block content %}
+
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+            {% for article in article_per_page %}
+                            <article class="post post-1">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+                            <a href="{% url 'blog:show_article' %}?id={{article.id}} ">{{article.title}}</a>
+                        </h1>
+                        <div class="entry-meta">
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="2012-11-09T23:15:57+00:00">{{article.date_time}}</time></a></span>
+                            <span class="post-author"><a href="#">{{article.date_time}}</a></span>
+                            <span class="comments-link"><a href="#">{{article.comment}} 评论</a></span>
+                            <span class="views-count"><a href="#">{{article.view}} 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        {% load extra_tags %}
+                        <p>{{ article.content | link_str}}</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="{% url 'blog:show_article' %}?id={{article.id}} " class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+
+
+
+
+
+                <!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+                <div class="pagination">
+                    {% if article_per_page.has_previous %}
+                    <a href="{% url 'blog:blog_index'%}?num={{ article_per_page.previous_page_number }}">上一页</a>
+                {% endif %}
+                <ul>
+                {% for n in pagelist %}
+                        <li><a href="{% url 'blog:blog_index'%}?num={{ n }}" {% if n == article_per_page.number %}class="current"{% endif %}>{{ n }}</a></li>
+                {% endfor %}
+                </ul>
+                {% if article_per_page.has_next %}
+                    <a href="{% url 'blog:blog_index'%}?num={{ article_per_page.next_page_number }}">下一页</a>
+                {% endif %}
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+<!-- Mobile Menu -->
+
+{% endblock content %}

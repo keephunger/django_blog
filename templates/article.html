@@ -1,0 +1,73 @@
+{% extends 'header.html' %}
+{% block content %}
+
+
+
+    <div class="content-body">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8">
+                    <article class="post post-1">
+                        <header class="entry-header">
+                            <h1 class="entry-title">{{ article.title }}</h1>
+                            <div class="entry-meta">
+                                <span class="post-category"><a href="#">{{ article.category }}</a></span>
+                                <span class="post-date"><a href="#"><time class="entry-date"
+                                                                          datetime="2012-11-09T23:15:57+00:00">{{ article.date_time }}</time></a></span>
+                                <span class="post-author"><a href="#">{{ article.author }}</a></span>
+                                <span class="comments-link"><a href="#">{{ article.comment }} 评论</a></span>
+                                <span class="views-count"><a href="#">{{ article.view }} 阅读</a></span>
+                            </div>
+                        </header>
+                        <div class="entry-content clearfix">
+                            {{ article.content |safe }}
+                        </div>
+                    </article>
+                    <section class="comment-area" id="comment-area">
+                        <hr>
+                        <h3>发表评论</h3>
+                        <form action="{% url 'blog:blog_comment' %}?id={{ article.id }}" method="post"
+                              class="comment-form">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <label for="id_comment">评论：</label>
+                                <textarea name="comment" id="id_comment" required></textarea>
+                                <button type="submit" class="comment-btn">发表</button>
+                            </div>
+                        </form>
+                        <div class="comment-list-panel">
+                            <h3>评论列表，共 <span>{{ article.comment_value }}</span> 条评论</h3>
+                            <ul class="comment-list list-unstyled">
+                                {% for comment in comment_per_page %}
+                                    <li class="comment-item">
+                                        <span class="nickname">{{comment.user}}</span>
+                                        <time class="submit-date" datetime="2012-11-09T23:15:57+00:00">{{comment.date_time}}
+                                        </time>
+                                        <div class="text">
+                                            {{ comment.content }}
+                                        </div>
+                                    </li>
+                                {% endfor %}
+
+                            </ul>
+                                        <div class="pagination">
+                    {% if comment_per_page.has_previous %}
+                    <a href="{% url 'blog:show_article'%}?id={{ article.id }}&num={{ comment_per_page.previous_page_number }}">上一页</a>
+                {% endif %}
+                <ul>
+                {% for n in pagelist %}
+                        <li><a href="{% url 'blog:show_article'%}?id={{ article.id }}&num={{ n }}" {% if n == comment_per_page.number %}class="current"{% endif %}>{{ n }}</a></li>
+                {% endfor %}
+                </ul>
+                {% if comment_per_page.has_next %}
+                    <a href="{% url 'blog:show_article'%}?id={{ article.id }}&num={{ comment_per_page.next_page_number }}">下一页</a>
+                {% endif %}
+                </div>
+                        </div>
+                    </section>
+                </main>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
